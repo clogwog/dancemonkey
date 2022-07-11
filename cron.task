@@ -1,0 +1,45 @@
+#!/bin/bash
+set -x 
+rm /tmp/currenticon
+wget 'https://api.openweathermap.org/data/2.5/onecall?lat=-37.977326&lon=145.095578&appid=8d7077ee5ed9b05aaca63e714c277a09&units=metric' --output-document '/tmp/onecall.json'
+cat /tmp/onecall.json  | jq .current.temp > /tmp/currenttemp
+cat /tmp/onecall.json  | jq .current.weather[0].icon | sed 's/"//g' | head -c2  > /tmp/currenticon
+cat /tmp/onecall.json  | jq .daily[0].temp.min > /tmp/currentmin
+cat /tmp/onecall.json  | jq .daily[0].temp.max > /tmp/currentmax
+
+# get next iss pass
+wget  --no-check-certificate 'https://api.n2yo.com/rest/v1/satellite/visualpasses/25544/-37.814/144.96332/0/1/300&apiKey=3ZC5DV-S9W8RD-B4A8DL-4SMD' --output-document '/tmp/iss.json'
+cat /tmp/iss.json | jq .passes[0].startUTC > /tmp/isspassutc
+
+
+#echo "https://covidlive.com.au/vic" |
+#   wget -O- -i- | 
+#   hxnormalize -x | 
+#   hxselect -i "#content > div > div:nth-child(1) > section > table > tbody > tr:nth-child(2) > td.COL4.NET > span"   |  
+#   lynx -stdin -dump |
+#   xargs  > /tmp/currentcovid
+
+
+#echo "https://covidlive.com.au/vic" |
+#   wget -O- -i- |
+#   hxnormalize -x |
+#   hxselect -i "#content > div > div:nth-child(1) > section > table > tbody > tr:nth-child(3) > td.COL2.TOTAL"   |  
+#   lynx -stdin -dump |
+#   xargs  > /tmp/activecovid
+
+
+#wget 'https://covidlive.com.au/vic' --output-document '/tmp/vic.html'
+#cat /tmp/vic.html | grep ' <td class="VACCINATIONS"' | head -1 | sed -e 's/<[^>]*>//g' | awk '{$1=$1};1' |  tr -d '%' | awk '{printf "%.0f\n", $1}' > /tmp/activecovid
+#cat /tmp/vic.html  | grep '<td class="MA">' | head -1 | sed -e 's/<[^>]*>//g' | awk '{$1=$1};1' |  tr -d '%' | awk '{printf "%.0f\n", $1}' > /tmp/currentcovid
+
+#cat /tmp/covid-live.json | jq .[2].ACTIVE_CNT | sed 's/"//g' > /tmp/activecovid 
+#CASE_CNT=$(cat /tmp/covid-live.json | jq .[2].CASE_CNT | sed 's/"//g' )
+#PREV_CASE_CNT=$(cat /tmp/covid-live.json | jq .[2].PREV_CASE_CNT | sed 's/"//g' )
+#TODAY_NEW=$((CASE_CNT-PREV_CASE_CNT))
+#echo $TODAY_NEW > /tmp/currentcovid
+#cat /tmp/currentcovid
+#cat /tmp/activecovid
+#if [  'x$CASE_CNT' == 'xnull'  ] ; then 
+#    echo '-' > /tmp/currentcovid
+#    echo '-' > /tmp/activecovid
+#fi

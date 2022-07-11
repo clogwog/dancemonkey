@@ -1,0 +1,15 @@
+--2020-09-27 12:57:39--  https://covidlive.com.au/vic
+Resolving covidlive.com.au (covidlive.com.au)... 43.250.140.32
+Connecting to covidlive.com.au (covidlive.com.au)|43.250.140.32|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘vic’
+
+     0K .......... .......... .......... .........             1.11M=0.03s
+
+2020-09-27 12:57:40 (1.11 MB/s) - ‘vic’ saved [40366]
+
+/tmp/covid: Scheme missing.
+FINISHED --2020-09-27 12:57:40--
+Total wall clock time: 0.4s
+Downloaded: 1 files, 39K in 0.03s (1.11 MB/s)

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-rm /tmp/currenticon
-wget 'https://api.openweathermap.org/data/2.5/onecall?lat=-37.977326&lon=145.095578&appid=8d7077ee5ed9b05aaca63e714c277a09&units=metric' --output-document '/tmp/onecall.json'
-cat /tmp/onecall.json  | jq .current.temp > /tmp/currenttemp
-cat /tmp/onecall.json  | jq .current.weather[0].icon | sed 's/"//g' | head -c2  > /tmp/currenticon
-cat /tmp/onecall.json  | jq .daily[0].temp.min > /tmp/currentmin
-cat /tmp/onecall.json  | jq .daily[0].temp.max > /tmp/currentmax

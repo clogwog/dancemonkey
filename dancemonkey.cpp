@@ -29,14 +29,21 @@ void usage()
 	exit (1);
 }
 
-void DrawIcon(Canvas *canvas, const uint8_t icon[], float brightness )
+void DrawIcon(Canvas *canvas, const uint8_t animation_icons[][bmsize] , int index, float brightness )
 {
      int l =0;
      for( int y=0; y <=31; y++ )
      {
          for ( int x = 0; x < 32; x++ )
          {
-             canvas->SetPixel(x, y, brightness * icon[l++] , brightness * icon[l++], brightness * icon[l++]);
+	     bool draw = true;
+	     if (index>0 && animation_icons[index][l] == animation_icons[index-1][l]  && animation_icons[index][l+1] == animation_icons[index-1][l+1] && animation_icons[index][l+2] == animation_icons[index-1][l+2] )
+		draw = false;
+
+	     if( draw)
+             	canvas->SetPixel(x, y, brightness * animation_icons[index][l++] , brightness * animation_icons[index][l++], brightness * animation_icons[index][l++]);
+	     else
+		l = l + 3;
          }
      }
 }
@@ -87,7 +94,7 @@ int main(int argc, char *argv[])
     for( int index = 0; index < animation_frames; index++)
     {
 
-	DrawIcon(canvas, animation_icons[index], brightnessCorrection);
+	DrawIcon(canvas, animation_icons, index, brightnessCorrection);
         rgb_matrix::DrawText(canvas, font, 0,8 , text_color, strHour.c_str());
         rgb_matrix::DrawText(canvas, font, 21, 8, text_color, strMinute.c_str());
 							
